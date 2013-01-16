@@ -136,4 +136,11 @@ function save_event_details(){
 }
 // END - Custom Fields
 
+//Load datepicker
+function events_admin_init() {
+        wp_register_script( 'events-datepicker', plugins_url('/datepicker.js', __FILE__) );
+        wp_enqueue_script( 'events-datepicker' );
+}
+add_action( 'admin_enqueue_scripts', 'events_admin_init' );
+
 ?>
