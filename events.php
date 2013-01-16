@@ -105,7 +105,7 @@ function sp_event_meta() {
     <p><label>Location</label> 
 	<input type="text" size="10" name="event_loc" value="<?php echo $event_loc; ?>" /></p>
     <p><label>Date</label> 
-	<input type="text" size="10" name="event_date" value="<?php echo $event_date; ?>" /></p>
+	<input class="datepicker" type="text" size="10" name="event_date" value="<?php echo $event_date; ?>" /></p>
     <p><label>Time</label> 
 	<input type="text" size="10" name="event_time" value="<?php echo $event_time; ?>" /></p>
 	<?php
