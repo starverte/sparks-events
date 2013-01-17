@@ -97,17 +97,17 @@ function sp_event_add_custom_boxes() {
 function sp_event_meta() {
 	global $post;
 	$custom = get_post_custom($post->ID);
-    $event_loc = $custom["event_loc"] [0];
-	$event_date = $custom["event_date"] [0];
-	$event_time = $custom["event_time"] [0];
+    	$event_loc = $custom["event_loc"] [0];
+	$event_start = $custom["event_start"] [0];
+	$event_end = $custom["event_end"] [0];
 	
 ?>
     <p><label>Location</label> 
 	<input type="text" size="10" name="event_loc" value="<?php echo $event_loc; ?>" /></p>
-    <p><label>Date</label> 
-	<input class="datepicker" type="text" size="10" name="event_date" value="<?php echo $event_date; ?>" /></p>
-    <p><label>Time</label> 
-	<input type="text" size="10" name="event_time" value="<?php echo $event_time; ?>" /></p>
+    <p><label>Starts</label> 
+	<input class="datepicker" type="text" size="10" name="event_start" value="<?php echo date( 'F j, Y g:i a', $event_start ) ?>" /></p>
+    <p><label>Ends</label> 
+	<input class="datepicker" type="text" size="10" name="event_end" value="<?php echo date( 'F j, Y g:i a', $event_end ) ?>" /></p>
 	<?php
 }
 
@@ -130,8 +130,8 @@ function save_event_details(){
   }
   // save all meta data
   update_post_meta($post->ID, "event_loc", $_POST["event_loc"]);
-  update_post_meta($post->ID, "event_date", $_POST["event_date"]);
-  update_post_meta($post->ID, "event_time", $_POST["event_time"]);  
+  update_post_meta($post->ID, "event_start", strtotime($_POST["event_start"]));
+  update_post_meta($post->ID, "event_end", strtotime($_POST["event_end"]));  
   
 }
 // END - Custom Fields
