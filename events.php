@@ -105,9 +105,9 @@ function sp_event_meta() {
     <p><label>Location</label> 
 	<input type="text" size="10" name="event_loc" value="<?php echo $event_loc; ?>" /></p>
     <p><label>Starts</label> 
-	<input class="datepicker" type="text" size="10" name="event_start" value="<?php echo date( 'F j, Y g:i a', $event_start ) ?>" /></p>
+	<input class="datepicker" type="text" size="20" name="event_start" value="<?php echo date( 'F j, Y g:i a', $event_start ) ?>" /></p>
     <p><label>Ends</label> 
-	<input class="datepicker" type="text" size="10" name="event_end" value="<?php echo date( 'F j, Y g:i a', $event_end ) ?>" /></p>
+	<input class="datepicker" type="text" size="20" name="event_end" value="<?php echo date( 'F j, Y g:i a', $event_end ) ?>" /></p>
 	<?php
 }
 
