@@ -140,6 +140,9 @@ function save_event_details(){
 function events_admin_init() {
         wp_register_script( 'events-datepicker', plugins_url('/datepicker.js', __FILE__) );
         wp_enqueue_script( 'events-datepicker' );
+        wp_enqueue_script( 'jquery-ui-datepicker' );
+        wp_register_script( 'jquery-base', 'http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css' );
+        wp_enqueue_style( 'jquery-base' );
 }
 add_action( 'admin_enqueue_scripts', 'events_admin_init' );
 
