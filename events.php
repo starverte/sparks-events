@@ -146,4 +146,116 @@ function events_admin_init() {
 }
 add_action( 'admin_enqueue_scripts', 'events_admin_init' );
 
+add_action( 'widgets_init', 'sparks_events_widgets' );
+
+
+add_action( 'widgets_init', 'sparks_events_widgets' );
+
+
+add_action( 'widgets_init', 'sparks_events_widgets' );
+
+
+function sparks_events_widgets() {
+	register_widget( 'Upcoming_Events_Widget' );
+}
+
+class Upcoming_Events_Widget extends WP_Widget {
+
+	function Upcoming_Events_Widget() {
+		$widget_ops = array( 'classname' => 'upcoming-events', 'description' => __('A widget that displays upcoming events', 'upcoming-events') );
+		
+		$control_ops = array( 'width' => 300, 'height' => 350, 'id_base' => 'upcoming-events-widget' );
+		
+		$this->WP_Widget( 'upcoming-events-widget', __('Upcoming Events Widget', 'upcoming-events'), $widget_ops, $control_ops );
+	}
+	
+	function widget( $args, $instance ) {
+		extract( $args );
+
+		//Our variables from the widget settings.
+		$title = apply_filters('widget_title', $instance['title'] );
+		$name = $instance['name'];
+		$show_info = isset( $instance['show_info'] ) ? $instance['show_info'] : false;
+
+		echo $before_widget;
+
+		// Display the widget title 
+		if ( $title )
+			echo $before_title . $title . $after_title;
+
+		$args = array(
+			'post_type' => 'sp_event',
+			'meta_key' => 'event_start',
+			'orderby' => 'meta_value_num',
+			'order' => 'ASC',
+			'meta_query' => array(
+				array(
+					'key' => 'event_start',
+				)
+			)
+		);
+		$the_query = new WP_Query( $args );
+ 
+  		while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
+		
+            <div id="post-<?php the_ID(); ?>" <?php post_class(); ?> >
+		<?php	$custom = get_post_custom();
+                $event_loc = $custom['event_loc'][0];
+                $event_start = $custom['event_start'][0];
+                $event_end = $custom['event_end'][0];
+                $start_mth = date( 'M', $event_start );
+                $start_day = date( 'j', $event_start );
+                $start_time = date( 'g:i a', $event_start );
+                $end_time = date( 'g:i a', $event_end ); ?>
+                
+                <div class="event-date">
+                    <div class="month"><?php echo $start_mth; ?></div>
+                    <div class="day"><?php echo $start_day; ?></div>
+                </div>
+                
+                <header class="entry-header">
+                    <h1 class="entry-title"><?php the_title(); ?></h1>
+                    <p class="event-time"><?php echo $start_time; ?> to <?php echo $end_time; ?></p>
+                </header><!-- .entry-header -->
+
+		<a class="directions" href="https://maps.google.com/maps?q=<?php echo $event_loc; ?>" target="_blank">Map</a>
+                
+                <div class="entry-content">
+			<?php the_content(); ?>
+                </div><!-- .entry-content -->
+
+            </div><!-- #post-<?php the_ID(); ?> --> <?php
+		
+		endwhile;
+		
+		echo $after_widget;
+	}
+
+	//Update the widget 
+	 
+	function update( $new_instance, $old_instance ) {
+		$instance = $old_instance;
+
+		//Strip tags from title and name to remove HTML 
+		$instance['title'] = strip_tags( $new_instance['title'] );
+
+		return $instance;
+	}
+
+	
+	function form( $instance ) {
+
+		//Set up some default widget settings.
+		$defaults = array( 'title' => __('Upcoming Events', 'upcoming-events'), 'show_info' => true );
+		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
+
+		<p>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e('Title:', 'upcoming-events'); ?></label>
+			<input id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo $instance['title']; ?>" style="width:100%;" />
+		</p>
+
+	<?php
+	}
+}
+
 ?>
