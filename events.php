@@ -174,7 +174,7 @@ class Upcoming_Events_Widget extends WP_Widget {
 
 		//Our variables from the widget settings.
 		$title = apply_filters('widget_title', $instance['title'] );
-		$name = $instance['name'];
+		$numposts = $instance['numposts'];
 		$show_info = isset( $instance['show_info'] ) ? $instance['show_info'] : false;
 
 		echo $before_widget;
@@ -188,6 +188,7 @@ class Upcoming_Events_Widget extends WP_Widget {
 			'meta_key' => 'event_start',
 			'orderby' => 'meta_value_num',
 			'order' => 'ASC',
+			'posts_per_page' => $numposts ,
 			'meta_query' => array(
 				array(
 					'key' => 'event_start',
@@ -238,7 +239,7 @@ class Upcoming_Events_Widget extends WP_Widget {
 
 		//Strip tags from title and name to remove HTML 
 		$instance['title'] = strip_tags( $new_instance['title'] );
-
+		$instance['numposts'] = strip_tags( $new_instance['numposts'] );
 		return $instance;
 	}
 
@@ -247,11 +248,16 @@ class Upcoming_Events_Widget extends WP_Widget {
 
 		//Set up some default widget settings.
 		$defaults = array( 'title' => __('Upcoming Events', 'upcoming-events'), 'show_info' => true );
+		$defaults = array( 'numposts' => __('3', 'upcoming-events'), 'show_info' => true );
 		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
 
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e('Title:', 'upcoming-events'); ?></label>
 			<input id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo $instance['title']; ?>" style="width:100%;" />
+		</p>
+		<p>
+			<label for="<?php echo $this->get_field_id( 'numposts' ); ?>"><?php _e('Number of Events:', 'upcoming-events'); ?></label>
+			<input id="<?php echo $this->get_field_id( 'numposts' ); ?>" name="<?php echo $this->get_field_name( 'numposts' ); ?>" value="<?php echo $instance['numposts']; ?>" style="width:100%;" />
 		</p>
 
 	<?php
