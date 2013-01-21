@@ -148,13 +148,6 @@ add_action( 'admin_enqueue_scripts', 'events_admin_init' );
 
 add_action( 'widgets_init', 'sparks_events_widgets' );
 
-
-add_action( 'widgets_init', 'sparks_events_widgets' );
-
-
-add_action( 'widgets_init', 'sparks_events_widgets' );
-
-
 function sparks_events_widgets() {
 	register_widget( 'Upcoming_Events_Widget' );
 }
