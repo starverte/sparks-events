@@ -175,6 +175,8 @@ class Upcoming_Events_Widget extends WP_Widget {
 		// Display the widget title 
 		if ( $title )
 			echo $before_title . $title . $after_title;
+		
+		$today = time();
 
 		$args = array(
 			'post_type' => 'sp_event',
@@ -184,7 +186,9 @@ class Upcoming_Events_Widget extends WP_Widget {
 			'posts_per_page' => $numposts ,
 			'meta_query' => array(
 				array(
-					'key' => 'event_start',
+					'key' => 'event_end',
+					'value' => $today,
+					'compare' => '>=',
 				)
 			)
 		);
