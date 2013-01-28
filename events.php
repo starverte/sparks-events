@@ -257,4 +257,24 @@ class Upcoming_Events_Widget extends WP_Widget {
 	}
 }
 
+//Query function
+function the_events($events = -1) {
+	$today = time();
+	$args = array(
+			'post_type' => 'sp_event',
+			'meta_key' => 'event_start',
+			'orderby' => 'meta_value_num',
+			'order' => 'ASC',
+			'posts_per_page' => $events,
+			'meta_query' => array(
+				array(
+					'key' => 'event_end',
+					'value' => $today,
+					'compare' => '>=',
+				)
+			)
+		);
+		query_posts($args);
+}
+
 ?>
