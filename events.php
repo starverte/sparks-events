@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Events
+Plugin Name: Sparks Events
 Plugin URI: //Not yet developed
 Description: Part of the Sparks Framework. A plugin that adds the ability of an events calendar.
 Version: alpha
