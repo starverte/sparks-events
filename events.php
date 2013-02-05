@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name: Sparks Events
-Plugin URI: http://starverte.com/plugins/sparks-events
+Plugin Name: Events
+Plugin URI: //Not yet developed
 Description: Part of the Sparks Framework. A plugin that adds the ability of an events calendar.
 Version: alpha
 Author: Star Verte LLC
@@ -24,7 +24,7 @@ License: GPLv2 or later
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 	
 	You should have received a copy of the GNU General Public License
-	along with Sparks Store.  If not, see <http://www.gnu.org/licenses/>.
+	along with Events.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 function sparks_events_init() {
