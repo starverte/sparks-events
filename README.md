@@ -37,4 +37,4 @@ of the framework. Then, additional child themes and plugins extend the functiona
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
     
     You should have received a copy of the GNU General Public License
-    along with Events.  If not, see <http://www.gnu.org/licenses/>.
+    along with Sparks Events.  If not, see <http://www.gnu.org/licenses/>.
