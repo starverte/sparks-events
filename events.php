@@ -132,10 +132,15 @@ function save_event_details(){
 	return $post_id;
   }
   // save all meta data
-  update_post_meta($post->ID, "event_loc", $_POST["event_loc"]);
-  update_post_meta($post->ID, "event_start", strtotime($_POST["event_start"]));
-  update_post_meta($post->ID, "event_end", strtotime($_POST["event_end"]));  
-  
+  if (isset($_POST['event_loc'])) {
+	  update_post_meta($post->ID, "event_loc", $_POST["event_loc"]);
+  }
+  if (isset($_POST['event_start'])) {
+	  update_post_meta($post->ID, "event_start", strtotime($_POST["event_start"]));
+  }
+  if (isset($_POST['event_end'])) {
+	  update_post_meta($post->ID, "event_end", strtotime($_POST["event_end"]));
+  }  
 }
 // END - Custom Fields
 
@@ -283,5 +288,4 @@ function the_events($events = -1) {
 		);
 		query_posts($args);
 }
-
 ?>
