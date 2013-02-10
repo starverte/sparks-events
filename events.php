@@ -120,15 +120,15 @@ add_action('save_post', 'save_event_details');
 
 function save_event_details(){
   global $post;
-  if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) {
+  if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE && (isset($post_id)) ) {
 	return $post_id;
   }
 
-  if( defined('DOING_AJAX') && DOING_AJAX ) { //Prevents the metaboxes from being overwritten while quick editing.
+  if( defined('DOING_AJAX') && DOING_AJAX && (isset($post_id)) ) { //Prevents the metaboxes from being overwritten while quick editing.
 	return $post_id;
   }
 
-  if( ereg('/\edit\.php', $_SERVER['REQUEST_URI']) ) { //Detects if the save action is coming from a quick edit/batch edit.
+  if( ereg('/\edit\.php', $_SERVER['REQUEST_URI']) && (isset($post_id)) ) { //Detects if the save action is coming from a quick edit/batch edit.
 	return $post_id;
   }
   // save all meta data
