@@ -149,8 +149,13 @@ function events_admin_init() {
         wp_register_script( 'events-datepicker', plugins_url('/datepicker.js', __FILE__) );
         wp_enqueue_script( 'events-datepicker' );
         wp_enqueue_script( 'jquery-ui-datepicker' );
-        wp_register_style( 'jquery-base', 'http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css' );
-        wp_enqueue_style( 'jquery-base' );
+        if (wp_script_is('jquery-base', 'registered')) {
+        	wp_enqueue_style( 'jquery-base' );
+		}
+		else {
+			wp_register_style( 'jquery-base', 'http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css' );
+        	wp_enqueue_style( 'jquery-base' );
+		}
 }
 add_action( 'admin_enqueue_scripts', 'events_admin_init' );
 
