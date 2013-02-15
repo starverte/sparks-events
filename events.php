@@ -106,10 +106,10 @@ function sp_event_meta() {
 	<input type="text" size="10" name="event_loc" value="<?php if (isset($custom['event_loc'])) { echo $custom["event_loc"] [0]; } ?>" /></p>
     <p><label>Starts</label> 
 	<input class="datepicker" type="text" size="15" name="event_start_date" value="<?php if (isset($custom['event_start'])) { echo date( 'F j, Y', $custom["event_start"] [0] ); } ?>" />
-    <input class="" type="text" size="5" name="event_start_time" value="<?php if (isset($custom['event_start'])) { echo date( 'g:i a', $custom["event_start"] [0] ); } ?>" /></p>
+    <input class="times" type="text" size="5" name="event_start_time" value="<?php if (isset($custom['event_start'])) { echo date( 'g:i a', $custom["event_start"] [0] ); } ?>" /></p>
     <p><label>Ends</label> 
 	<input class="datepicker" type="text" size="15" name="event_end_date" value="<?php if (isset($custom['event_end'])) { echo date( 'F j, Y', $custom["event_end"] [0] ); } ?>" />
-    <input class="" type="text" size="5" name="event_end_time" value="<?php if (isset($custom['event_end'])) { echo date( 'g:i a', $custom["event_end"] [0] ); } ?>" /></p>
+    <input class="times" type="text" size="5" name="event_end_time" value="<?php if (isset($custom['event_end'])) { echo date( 'g:i a', $custom["event_end"] [0] ); } ?>" /></p>
     <p><input type="checkbox" name="event_multi_day" value="event_multi_day" <?php if (isset($custom['event_multi_day']) && $custom['event_multi_day'][0] == true) { echo 'checked=\"checked\"'; } ?>><label style="padding-left:0.5em;">Multi-day Event</label></p>
 	<?php
 }
@@ -150,7 +150,7 @@ function save_event_details(){
   if (isset($_POST['event_multi_day'])) {
 	  update_post_meta($post->ID, "event_multi_day", true);
   }
-  else {
+  elseif (isset($post->ID)) {
 	  update_post_meta($post->ID, "event_multi_day", false);
   }
 }
@@ -158,9 +158,12 @@ function save_event_details(){
 
 //Load datepicker
 function events_admin_init() {
-        wp_register_script( 'events-datepicker', plugins_url('/datepicker.js', __FILE__) );
-        wp_enqueue_script( 'events-datepicker' );
+        wp_register_script( 'event-script', plugins_url('/event-script.js', __FILE__) );
+        wp_enqueue_script( 'event-script' );
+		wp_register_style( 'event-style', plugins_url('/event-style.css', __FILE__) );
+		wp_enqueue_style( 'event-style' );
         wp_enqueue_script( 'jquery-ui-datepicker' );
+		wp_enqueue_script( 'jquery-ui-autocomplete' );
         if (wp_script_is('jquery-base', 'registered')) {
         	wp_enqueue_style( 'jquery-base' );
 		}
