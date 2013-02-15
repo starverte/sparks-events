@@ -100,17 +100,17 @@ function sp_event_add_custom_boxes() {
 function sp_event_meta() {
 	global $post;
 	$custom = get_post_custom($post->ID);
-    	$event_loc = $custom["event_loc"] [0];
-	$event_start = $custom["event_start"] [0];
-	$event_end = $custom["event_end"] [0];
 	
 ?>
     <p><label>Location</label> 
-	<input type="text" size="10" name="event_loc" value="<?php echo $event_loc; ?>" /></p>
+	<input type="text" size="10" name="event_loc" value="<?php if (isset($custom['event_loc'])) { echo $custom["event_loc"] [0]; } ?>" /></p>
     <p><label>Starts</label> 
-	<input class="datepicker" type="text" size="20" name="event_start" value="<?php echo date( 'F j, Y g:i a', $event_start ) ?>" /></p>
+	<input class="datepicker" type="text" size="15" name="event_start_date" value="<?php if (isset($custom['event_start'])) { echo date( 'F j, Y', $custom["event_start"] [0] ); } ?>" />
+    <input class="times" type="text" size="5" name="event_start_time" value="<?php if (isset($custom['event_start'])) { echo date( 'g:i a', $custom["event_start"] [0] ); } ?>" /></p>
     <p><label>Ends</label> 
-	<input class="datepicker" type="text" size="20" name="event_end" value="<?php echo date( 'F j, Y g:i a', $event_end ) ?>" /></p>
+	<input class="datepicker" type="text" size="15" name="event_end_date" value="<?php if (isset($custom['event_end'])) { echo date( 'F j, Y', $custom["event_end"] [0] ); } ?>" />
+    <input class="times" type="text" size="5" name="event_end_time" value="<?php if (isset($custom['event_end'])) { echo date( 'g:i a', $custom["event_end"] [0] ); } ?>" /></p>
+    <p><input type="checkbox" name="event_multi_day" value="event_multi_day" <?php if (isset($custom['event_multi_day']) && $custom['event_multi_day'][0] == true) { echo 'checked=\"checked\"'; } ?>><label style="padding-left:0.5em;">Multi-day Event</label></p>
 	<?php
 }
 
@@ -135,22 +135,42 @@ function save_event_details(){
   if (isset($_POST['event_loc'])) {
 	  update_post_meta($post->ID, "event_loc", $_POST["event_loc"]);
   }
-  if (isset($_POST['event_start'])) {
-	  update_post_meta($post->ID, "event_start", strtotime($_POST["event_start"]));
+  if (isset($_POST['event_start_date']) && isset($_POST['event_start_time'])) {
+	  update_post_meta($post->ID, "event_start_date", $_POST["event_start_date"]);
+	  update_post_meta($post->ID, "event_start_time", $_POST["event_start_time"]);
+	  $event_start = $_POST['event_start_date'] . ' ' . $_POST['event_start_time'];
+	  update_post_meta($post->ID, "event_start", strtotime($event_start));
   }
-  if (isset($_POST['event_end'])) {
-	  update_post_meta($post->ID, "event_end", strtotime($_POST["event_end"]));
-  }  
+  if (isset($_POST['event_end_date']) && isset($_POST['event_end_time'])) {
+	  update_post_meta($post->ID, "event_end_date", $_POST["event_end_date"]);
+	  update_post_meta($post->ID, "event_end_time", $_POST["event_end_time"]);
+	  $event_end = $_POST['event_end_date'] . ' ' . $_POST['event_end_time'];
+	  update_post_meta($post->ID, "event_end", strtotime($event_end));
+  }
+  if (isset($_POST['event_multi_day'])) {
+	  update_post_meta($post->ID, "event_multi_day", true);
+  }
+  elseif (isset($post->ID)) {
+	  update_post_meta($post->ID, "event_multi_day", false);
+  }
 }
 // END - Custom Fields
 
 //Load datepicker
 function events_admin_init() {
-        wp_register_script( 'events-datepicker', plugins_url('/datepicker.js', __FILE__) );
-        wp_enqueue_script( 'events-datepicker' );
+        wp_register_script( 'event-script', plugins_url('/event-script.js', __FILE__) );
+        wp_enqueue_script( 'event-script' );
+		wp_register_style( 'event-style', plugins_url('/event-style.css', __FILE__) );
+		wp_enqueue_style( 'event-style' );
         wp_enqueue_script( 'jquery-ui-datepicker' );
-        wp_register_style( 'jquery-base', 'http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css' );
-        wp_enqueue_style( 'jquery-base' );
+		wp_enqueue_script( 'jquery-ui-autocomplete' );
+        if (wp_script_is('jquery-base', 'registered')) {
+        	wp_enqueue_style( 'jquery-base' );
+		}
+		else {
+			wp_register_style( 'jquery-base', 'http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css' );
+        	wp_enqueue_style( 'jquery-base' );
+		}
 }
 add_action( 'admin_enqueue_scripts', 'events_admin_init' );
 
@@ -211,8 +231,14 @@ class Upcoming_Events_Widget extends WP_Widget {
                 $event_end = $custom['event_end'][0];
                 $start_mth = date( 'M', $event_start );
                 $start_day = date( 'j', $event_start );
-                $start_time = date( 'g:i a', $event_start );
-                $end_time = date( 'g:i a', $event_end ); ?>
+				if (isset($custom['event_multi_day']) && $custom['event_multi_day'][0] == true) {
+					$start_time = date( 'M j, g:i a', $event_start );
+					$end_time = date( 'M j, g:i a', $event_end );			
+				}
+				else {
+                	$start_time = date( 'g:i a', $event_start );
+                	$end_time = date( 'g:i a', $event_end );
+				}?>
                 
                 <div class="event-date">
                     <div class="month"><?php echo $start_mth; ?></div>
